@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow — Your AI Study Companion</title>
+  <meta name="description" content="Smart study tools: Doubt Solver, Assignment Generator, Roadmaps, Flowcharts & Notes — all offline." />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#5b4eff" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===== MOBILE TOPBAR ===== -->
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="topbar-brand">
+    <svg class="brand-icon" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    StudyFlow
+  </div>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</header>
+
+<!-- ===== OVERLAY ===== -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>StudyFlow</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <button class="nav-item active" data-page="doubt">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17" r="0.5" fill="currentColor" stroke="currentColor"/></svg>
+      <span>Doubt Solver</span>
+    </button>
+    <button class="nav-item" data-page="assignment">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/><polyline points="10 9 9 9 8 9" stroke="currentColor" stroke-width="2"/></svg>
+      <span>Assignments</span>
+    </button>
+    <button class="nav-item" data-page="roadmap">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Roadmaps</span>
+    </button>
+    <button class="nav-item" data-page="flowchart">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="4" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="4" rx="1" stroke="currentColor" stroke-width="2"/><rect x="8" y="17" width="8" height="4" rx="1" stroke="currentColor" stroke-width="2"/><path d="M6.5 7v3h5v3m2-6v3h-2m0 3v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Flowcharts</span>
+    </button>
+    <button class="nav-item" data-page="notes">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="2"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2"/></svg>
+      <span>Notes</span>
+    </button>
+    <button class="nav-item" data-page="saved">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      <span>Saved</span>
+      <span class="badge" id="savedBadge">0</span>
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="theme-toggle-sidebar" id="themeToggleSidebar">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="theme-label">Toggle Theme</span>
+    </button>
+    <p class="sidebar-version">v1.0 · Works Offline</p>
+  </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main">
+
+  <!-- DOUBT SOLVER -->
+  <section class="page active" id="page-doubt">
+    <div class="page-header">
+      <h1>Smart Doubt Solver</h1>
+      <p>Enter your question — get a clear, step-by-step breakdown.</p>
+    </div>
+    <div class="card input-card">
+      <textarea id="doubtInput" placeholder="e.g. How does photosynthesis work? / Solve: 2x + 5 = 13 / What is Newton's second law?" rows="4"></textarea>
+      <div class="btn-row">
+        <select id="doubtSubject">
+          <option value="auto">Auto-detect Subject</option>
+          <option value="math">Mathematics</option>
+          <option value="physics">Physics</option>
+          <option value="chemistry">Chemistry</option>
+          <option value="biology">Biology</option>
+          <option value="history">History</option>
+          <option value="programming">Programming</option>
+          <option value="general">General</option>
+        </select>
+        <button class="btn-primary" id="solveDoubt">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Solve Now
+        </button>
+      </div>
+    </div>
+    <div class="result-area" id="doubtResult" style="display:none">
+      <div class="result-toolbar">
+        <h3 id="doubtResultTitle">Solution</h3>
+        <div class="toolbar-actions">
+          <button class="btn-icon" onclick="copyResult('doubtResultContent')" title="Copy">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+          <button class="btn-icon" onclick="saveItem('doubt')" title="Save">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+          <button class="btn-icon" onclick="exportPDF('doubtResult')" title="Export PDF">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="result-content" id="doubtResultContent"></div>
+    </div>
+    <div class="examples-grid">
+      <p class="examples-label">Try these examples:</p>
+      <button class="example-chip" onclick="fillDoubt('Solve: 3x + 12 = 24')">Solve: 3x + 12 = 24</button>
+      <button class="example-chip" onclick="fillDoubt('What is photosynthesis?')">What is photosynthesis?</button>
+      <button class="example-chip" onclick="fillDoubt('Explain Newton\'s laws of motion')">Newton's Laws</button>
+      <button class="example-chip" onclick="fillDoubt('What is a for loop in Python?')">Python for loop</button>
+      <button class="example-chip" onclick="fillDoubt('Explain the water cycle')">Water Cycle</button>
+      <button class="example-chip" onclick="fillDoubt('What is the Pythagorean theorem?')">Pythagorean Theorem</button>
+    </div>
+  </section>
+
+  <!-- ASSIGNMENT GENERATOR -->
+  <section class="page" id="page-assignment">
+    <div class="page-header">
+      <h1>Assignment Generator</h1>
+      <p>Get structured, ready-to-submit assignments in seconds.</p>
+    </div>
+    <div class="card input-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Topic</label>
+          <input type="text" id="assignTopic" placeholder="e.g. Climate Change, World War II, Photosynthesis" />
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select id="assignSubject">
+            <option value="general">General</option>
+            <option value="science">Science</option>
+            <option value="history">History</option>
+            <option value="english">English/Literature</option>
+            <option value="geography">Geography</option>
+            <option value="economics">Economics</option>
+            <option value="technology">Technology</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Difficulty</label>
+          <select id="assignDifficulty">
+            <option value="beginner">Beginner (Class 6-8)</option>
+            <option value="intermediate" selected>Intermediate (Class 9-10)</option>
+            <option value="advanced">Advanced (Class 11-12)</option>
+            <option value="university">University Level</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Word Limit</label>
+          <select id="assignWords">
+            <option value="200">~200 words</option>
+            <option value="400" selected>~400 words</option>
+            <option value="600">~600 words</option>
+            <option value="1000">~1000 words</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:1rem">
+        <label>Assignment Type</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="assignType" value="essay" checked /> Essay</label>
+          <label class="radio-label"><input type="radio" name="assignType" value="report" /> Report</label>
+          <label class="radio-label"><input type="radio" name="assignType" value="qa" /> Q&A</label>
+          <label class="radio-label"><input type="radio" name="assignType" value="project" /> Project Plan</label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" id="generateAssignment">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20h9" stroke="currentColor" stroke-width="2"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="2"/></svg>
+          Generate Assignment
+        </button>
+      </div>
+    </div>
+    <div class="result-area" id="assignResult" style="display:none">
+      <div class="result-toolbar">
+        <h3 id="assignResultTitle">Assignment</h3>
+        <div class="toolbar-actions">
+          <button class="btn-icon" onclick="copyResult('assignResultContent')" title="Copy"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"/></svg></button>
+          <button class="btn-icon" onclick="saveItem('assignment')" title="Save"><svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/></svg></button>
+          <button class="btn-icon" onclick="exportPDF('assignResult')" title="PDF"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2"/></svg></button>
+        </div>
+      </div>
+      <div class="result-content" id="assignResultContent"></div>
+    </div>
+  </section>
+
+  <!-- ROADMAP BUILDER -->
+  <section class="page" id="page-roadmap">
+    <div class="page-header">
+      <h1>Study Roadmap Builder</h1>
+      <p>Get a day-wise, milestone-driven plan to reach your goal.</p>
+    </div>
+    <div class="card input-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Your Goal</label>
+          <input type="text" id="roadmapGoal" placeholder="e.g. Learn Python, Crack JEE, Master Calculus" />
+        </div>
+        <div class="form-group">
+          <label>Duration</label>
+          <select id="roadmapDuration">
+            <option value="7">1 Week</option>
+            <option value="14" selected>2 Weeks</option>
+            <option value="30">1 Month</option>
+            <option value="90">3 Months</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Daily Study Hours</label>
+          <select id="roadmapHours">
+            <option value="1">1 Hour/day</option>
+            <option value="2" selected>2 Hours/day</option>
+            <option value="3">3 Hours/day</option>
+            <option value="5">5+ Hours/day</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Current Level</label>
+          <select id="roadmapLevel">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate" selected>Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" id="generateRoadmap">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Build My Roadmap
+        </button>
+      </div>
+    </div>
+    <div class="result-area" id="roadmapResult" style="display:none">
+      <div class="result-toolbar">
+        <h3 id="roadmapResultTitle">Study Roadmap</h3>
+        <div class="toolbar-actions">
+          <button class="btn-icon" onclick="copyResult('roadmapResultContent')" title="Copy"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"/></svg></button>
+          <button class="btn-icon" onclick="saveItem('roadmap')" title="Save"><svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/></svg></button>
+          <button class="btn-icon" onclick="exportPDF('roadmapResult')" title="PDF"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2"/></svg></button>
+        </div>
+      </div>
+      <div class="result-content" id="roadmapResultContent"></div>
+    </div>
+    <div class="examples-grid">
+      <p class="examples-label">Popular goals:</p>
+      <button class="example-chip" onclick="fillRoadmap('Learn Python from scratch')">Learn Python</button>
+      <button class="example-chip" onclick="fillRoadmap('Crack JEE Main exam')">Crack JEE</button>
+      <button class="example-chip" onclick="fillRoadmap('Master Data Structures and Algorithms')">DSA Mastery</button>
+      <button class="example-chip" onclick="fillRoadmap('Learn Web Development')">Web Dev</button>
+      <button class="example-chip" onclick="fillRoadmap('NEET Biology preparation')">NEET Bio</button>
+    </div>
+  </section>
+
+  <!-- FLOWCHART GENERATOR -->
+  <section class="page" id="page-flowchart">
+    <div class="page-header">
+      <h1>Flowchart Generator</h1>
+      <p>Visualize any concept or process as a clean flowchart.</p>
+    </div>
+    <div class="card input-card">
+      <div class="form-group">
+        <label>Topic / Process</label>
+        <input type="text" id="flowchartTopic" placeholder="e.g. How a computer processes data, Water cycle, Photosynthesis process" />
+      </div>
+      <div class="form-group" style="margin-top:1rem">
+        <label>Type</label>
+        <div class="radio-group">
+          <label class="radio-label"><input type="radio" name="flowType" value="process" checked /> Process Flow</label>
+          <label class="radio-label"><input type="radio" name="flowType" value="concept" /> Concept Map</label>
+          <label class="radio-label"><input type="radio" name="flowType" value="decision" /> Decision Tree</label>
+          <label class="radio-label"><input type="radio" name="flowType" value="cycle" /> Cycle Diagram</label>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" id="generateFlowchart">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="4" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="4" rx="1" stroke="currentColor" stroke-width="2"/><rect x="8" y="17" width="8" height="4" rx="1" stroke="currentColor" stroke-width="2"/><path d="M6.5 7v3h5v3m2-6v3h-2m0 3v1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Generate Flowchart
+        </button>
+      </div>
+    </div>
+    <div class="result-area" id="flowchartResult" style="display:none">
+      <div class="result-toolbar">
+        <h3 id="flowchartResultTitle">Flowchart</h3>
+        <div class="toolbar-actions">
+          <button class="btn-icon" onclick="saveItem('flowchart')" title="Save"><svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/></svg></button>
+          <button class="btn-icon" onclick="exportPDF('flowchartResult')" title="PDF"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2"/></svg></button>
+        </div>
+      </div>
+      <div id="flowchartDiagram"></div>
+    </div>
+    <div class="examples-grid">
+      <p class="examples-label">Try these:</p>
+      <button class="example-chip" onclick="fillFlowchart('How does a computer work?')">Computer Working</button>
+      <button class="example-chip" onclick="fillFlowchart('Photosynthesis process')">Photosynthesis</button>
+      <button class="example-chip" onclick="fillFlowchart('Water cycle')">Water Cycle</button>
+      <button class="example-chip" onclick="fillFlowchart('How does the internet work?')">How Internet Works</button>
+      <button class="example-chip" onclick="fillFlowchart('Steps to solve a math problem')">Math Problem Steps</button>
+    </div>
+  </section>
+
+  <!-- NOTES MAKER -->
+  <section class="page" id="page-notes">
+    <div class="page-header">
+      <h1>Smart Notes Maker</h1>
+      <p>Create, format, and save structured notes instantly.</p>
+    </div>
+    <div class="notes-layout">
+      <div class="notes-editor-panel">
+        <div class="card input-card">
+          <div class="form-group">
+            <label>Note Title</label>
+            <input type="text" id="noteTitle" placeholder="e.g. Chapter 5: Newton's Laws" />
+          </div>
+          <div class="form-group" style="margin-top:1rem">
+            <label>Topic / Content to convert into notes</label>
+            <textarea id="noteInput" placeholder="Enter raw content, bullet points, or a topic name and let StudyFlow format it into structured notes..." rows="8"></textarea>
+          </div>
+          <div class="form-group" style="margin-top:1rem">
+            <label>Note Style</label>
+            <div class="radio-group">
+              <label class="radio-label"><input type="radio" name="noteStyle" value="structured" checked /> Structured</label>
+              <label class="radio-label"><input type="radio" name="noteStyle" value="cornell" /> Cornell Style</label>
+              <label class="radio-label"><input type="radio" name="noteStyle" value="mindmap" /> Mind Map Text</label>
+              <label class="radio-label"><input type="radio" name="noteStyle" value="flashcard" /> Flashcards</label>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn-outline" id="saveNoteBtn">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/></svg>
+              Save Note
+            </button>
+            <button class="btn-primary" id="formatNote">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="2"/></svg>
+              Format & Preview
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="notes-preview-panel">
+        <div class="result-area" id="noteResult" style="display:block; min-height:300px">
+          <div class="result-toolbar">
+            <h3>Preview</h3>
+            <div class="toolbar-actions">
+              <button class="btn-icon" onclick="copyResult('noteResultContent')" title="Copy"><svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="2"/></svg></button>
+              <button class="btn-icon" onclick="exportPDF('noteResult')" title="PDF"><svg viewBox="0 0 24 24" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/><polyline points="7 10 12 15 17 10" stroke="currentColor" stroke-width="2"/><line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2"/></svg></button>
+            </div>
+          </div>
+          <div class="result-content" id="noteResultContent">
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" width="48" height="48"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" stroke-width="1.5"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+              <p>Your formatted note preview will appear here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAVED ITEMS -->
+  <section class="page" id="page-saved">
+    <div class="page-header">
+      <h1>Saved Items</h1>
+      <p>All your saved doubts, assignments, roadmaps, and notes.</p>
+    </div>
+    <div class="saved-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="doubt">Doubts</button>
+      <button class="filter-btn" data-filter="assignment">Assignments</button>
+      <button class="filter-btn" data-filter="roadmap">Roadmaps</button>
+      <button class="filter-btn" data-filter="flowchart">Flowcharts</button>
+      <button class="filter-btn" data-filter="notes">Notes</button>
+    </div>
+    <div id="savedList" class="saved-list">
+      <div class="empty-state">
+        <svg viewBox="0 0 24 24" fill="none" width="48" height="48"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.5"/></svg>
+        <p>Nothing saved yet. Start solving doubts or generating content!</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

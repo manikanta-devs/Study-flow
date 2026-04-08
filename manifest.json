@@ -1,0 +1,35 @@
+{
+  "name": "StudyFlow — Smart Study Companion",
+  "short_name": "StudyFlow",
+  "description": "AI-powered study tools: Doubt Solver, Assignments, Roadmaps, Flowcharts & Notes — all offline.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0e0f1a",
+  "theme_color": "#5b4eff",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='24' fill='%235b4eff'/><path d='M96 40L46 67l50 27 50-27L96 40zM46 117l50 27 50-27M46 92l50 27 50-27' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='64' fill='%235b4eff'/><path d='M256 80L120 157l136 77 136-77L256 80zM120 310l136 77 136-77M120 234l136 77 136-77' stroke='white' stroke-width='24' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Doubt Solver",
+      "url": "./#doubt",
+      "description": "Solve your academic doubts"
+    },
+    {
+      "name": "Notes",
+      "url": "./#notes",
+      "description": "Create and save study notes"
+    }
+  ]
+}
